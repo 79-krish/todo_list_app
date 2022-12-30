@@ -1,0 +1,44 @@
+{% extends 'to_do/main.html' %}
+{% block content %}
+<div class="header-bar">
+    <div>
+        <h1>hello {{request.user|title}}</h1>
+        <h3 style="margin: 0">you have <i>{{count}}</i>icomplete tasks </h3>
+    </div>
+</div>
+ 
+{% if request.user.is.authenticated %}
+    <p>{{request.user}}</p>
+    <a href="{% url 'logout' %}">Logout</a>
+    {% else %}
+    <a href="{% url 'login' %}">Login</a>
+    {% endif %}
+
+    <hr>
+    <h1> TO DO LIST {{color}}</h1>
+    <a href="{% url 'task-create'%}">Add Task</a>
+
+    <form method="GET">
+        <input type="text" name="search-area" value="{{search_input}}">
+        <input type="submit" value="search" class="button">
+    </form>
+     <table>
+        <tr>
+            <th>Item</th>
+            <th></th>
+            <th></th>
+        </tr>
+        {% for task in object_list %}
+        <tr>
+            <td>{{task.title}}</td>
+            <td><a href=" {% url 'task' task.id%}">view</a></td>
+            <td><a href=" {% url 'task-update' task.id%}">Edit</a></td>
+            <td><a href=" {% url 'task-delete' task.id%}">Delete</a></td>
+        </tr>
+        {% empty %}
+        <h3>no items in list</h3>
+        {% endfor %}
+    </table>
+</body>
+</html>
+{% endblock content %}
